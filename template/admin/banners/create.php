@@ -1,6 +1,6 @@
 <?php
 
-        require_once(BASE_PATH . '/template/admin/layouts/header.php');
+require_once(BASE_PATH . '/template/admin/layouts/header.php');
 
 
 ?>
@@ -19,7 +19,7 @@
                 <input type="text" class="form-control" id="url" name="url" placeholder="Enter url ..." required autofocus>
             </div>
 
-           
+
             <div class="form-group">
                 <label for="image">Image</label>
                 <input type="file" id="image" name="image" class="form-control-file" required autofocus>
