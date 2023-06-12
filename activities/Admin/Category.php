@@ -4,8 +4,9 @@ namespace Admin;
 
 use database\Database;
 
-class Category extends Admin{ 
-        
+class Category extends Admin
+{
+
         public function index()
         {
                 $db = new DataBase();
@@ -17,7 +18,6 @@ class Category extends Admin{
         {
 
                 require_once(BASE_PATH . '/template/admin/categories/create.php');
-
         }
 
         public function store($request)
@@ -39,7 +39,6 @@ class Category extends Admin{
                 $db = new DataBase();
                 $db->update('categories', $id, array_keys($request), $request);
                 $this->redirect('admin/category');
-
         }
 
         public function delete($id)

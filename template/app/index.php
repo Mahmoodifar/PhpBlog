@@ -10,12 +10,12 @@ header("Pragma: no-cache");
 <div class="header-content">
     <div class="row">
         <div class="">
-           
+
         </div>
     </div>
 </div>
 
-<img src="../../222.jpg" width="500px" height="300px" alt="" >
+<img src="../../222.jpg" width="500px" height="300px" alt="">
 
 
 
@@ -35,5 +35,3 @@ header("Pragma: no-cache");
 <?php
 require_once BASE_PATH . '/template/app/layouts/footer.php';
 ?>
-
-

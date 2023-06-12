@@ -37,8 +37,8 @@ class Auth
     {
         $message = '
         <h1>فعال سازی حساب کاربری</h1>
-        <p>'. $username .' عزیز برای فعال سازی حساب کاربری خود لطفا روی لینک زیر کلیک نمایید</p>
-        <di><a href="'. url('activation/' . $verifyToken) .'">فعال سازی حساب</a></di>
+        <p>' . $username . ' عزیز برای فعال سازی حساب کاربری خود لطفا روی لینک زیر کلیک نمایید</p>
+        <di><a href="' . url('activation/' . $verifyToken) . '">فعال سازی حساب</a></di>
         ';
         return $message;
     }
@@ -51,19 +51,19 @@ class Auth
 
         try {
             //Server settings
-            $mail->SMTPDebug = SMTP::DEBUG_SERVER; 
-            $mail->CharSet = "UTF-8"; 
-            $mail->isSMTP(); 
-            $mail->Host = MAIL_HOST; 
-            $mail->SMTPAuth = SMTP_AUTH; 
-            $mail->Username = MAIL_USERNAME; 
-            $mail->Password = MAIL_PASSWORD; 
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            $mail->CharSet = "UTF-8";
+            $mail->isSMTP();
+            $mail->Host = MAIL_HOST;
+            $mail->SMTPAuth = SMTP_AUTH;
+            $mail->Username = MAIL_USERNAME;
+            $mail->Password = MAIL_PASSWORD;
             $mail->SMTPSecure = 'tls';
-            $mail->Port = MAIL_PORT; 
+            $mail->Port = MAIL_PORT;
 
             //Recipients
             $mail->setFrom(SENDER_MAIL, SENDER_NAME);
-            $mail->addAddress($emailAddress);    
+            $mail->addAddress($emailAddress);
 
 
             //Content
@@ -77,56 +77,45 @@ class Auth
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             return false;
         }
-
     }
 
 
     public function register()
     {
-    require_once(BASE_PATH . '/template/auth/register.php');
+        require_once(BASE_PATH . '/template/auth/register.php');
     }
 
 
     public function registerStore($request)
     {
-        if(empty($request['email']) || empty($request['username']) || empty($request['password']))
-        {
+        if (empty($request['email']) || empty($request['username']) || empty($request['password'])) {
             flash('register_error', 'تمامی فیلد ها اجباری میباشند');
             $this->redirectBack();
-        }
-        else if(strlen($request['password']) < 8)
-        {
+        } else if (strlen($request['password']) < 8) {
             flash('register_error', 'رمز عبور باید حداقل ۸ کاراکتر باشد');
             $this->redirectBack();
-        }
-        else if(!filter_var($request['email'], FILTER_VALIDATE_EMAIL))
-        {
+        } else if (!filter_var($request['email'], FILTER_VALIDATE_EMAIL)) {
             flash('register_error', 'ایمیل معتبری وارد نشده است');
             $this->redirectBack();
-        }
-        else{
+        } else {
             $db = new DataBase();
             $user = $db->select('SELECT * FROM users WHERE email = ?', [$request['email']])->fetch();
-            if($user != null){
+            if ($user != null) {
                 flash('register_error', 'کاربر از قبل در سیستم وجود دارد عزیزم');
                 $this->redirectBack();
-            }
-            else{
+            } else {
                 $randomToken = $this->random();
                 $activationMessage = $this->activationMessage($request['username'], $randomToken);
                 $result = $this->sendMail($request['email'], 'فعال سازی حساب کاربری', $activationMessage);
-                if($result)
-                {
+                if ($result) {
                     $request['verify_token'] = $randomToken;
                     $request['password'] = $this->hash($request['password']);
                     $db->insert('users', array_keys($request), $request);
                     $this->redirect('login');
-                }
-                else{
+                } else {
                     flash('register_error', 'ارسال ایمیل با خطا مواجه شد');
                     $this->redirectBack();
                 }
-
             }
         }
     }
@@ -137,11 +126,9 @@ class Auth
     {
         $db = new Database();
         $user = $db->select("SELECT * FROM users WHERE verify_token = ? AND is_active = 0;", [$verifyToken])->fetch();
-        if($user == null)
-        {
+        if ($user == null) {
             $this->redirect('login');
-        }
-        else{
+        } else {
             $result = $db->update('users', $user['id'], ['is_active'], [1]);
             $this->redirect('login');
         }
@@ -157,53 +144,42 @@ class Auth
 
     public function checkLogin($request)
     {
-       if(empty($request['email']) || empty($request['password']))
-       {
-        flash('login_error', 'تمامی فیلد ها الزامی میباشند');
-        $this->redirectBack();
-       }
-       else{
-           $db = new DataBase();
-           $user = $db->select("SELECT * FROm users WHERE email = ?", [$request['email']])->fetch();
+        if (empty($request['email']) || empty($request['password'])) {
+            flash('login_error', 'تمامی فیلد ها الزامی میباشند');
+            $this->redirectBack();
+        } else {
+            $db = new DataBase();
+            $user = $db->select("SELECT * FROm users WHERE email = ?", [$request['email']])->fetch();
 
-           if($user != null)
-           {
-            if(password_verify($request['password'], $user['password']) && $user['is_active'] == 1)
-            {
-               $_SESSION['user'] = $user['id'];
-                $this->redirect('admin');
-            }
-            else{
-                flash('login_error', 'ورود انجام نشد');
+            if ($user != null) {
+                if (password_verify($request['password'], $user['password']) && $user['is_active'] == 1) {
+                    $_SESSION['user'] = $user['id'];
+                    $this->redirect('admin');
+                } else {
+                    flash('login_error', 'ورود انجام نشد');
+                    $this->redirectBack();
+                }
+            } else {
+                flash('login_error', 'کاربری با این مشخصات یافت نشد');
                 $this->redirectBack();
             }
-           }
-           else{
-            flash('login_error', 'کاربری با این مشخصات یافت نشد');
-            $this->redirectBack();
-           }
-       }
+        }
     }
 
 
     public function checkAdmin()
     {
-        if(isset($_SESSION['user']))
-        {
+        if (isset($_SESSION['user'])) {
             $db = new DataBase();
             $user = $db->select('SELECT * FROM users WHERE id = ?', [$_SESSION['user']])->fetch();
-            if($user != null)
-            {
-                if($user['permission'] != 'admin')
-                {
+            if ($user != null) {
+                if ($user['permission'] != 'admin') {
                     $this->redirect('home');
                 }
-            }
-            else{
+            } else {
                 $this->redirect('home');
             }
-        }
-        else{
+        } else {
             $this->redirect('home');
         }
     }
@@ -211,8 +187,7 @@ class Auth
 
     public function logout()
     {
-        if(isset($_SESSION['user']))
-        {
+        if (isset($_SESSION['user'])) {
             unset($_SESSION['user']);
             session_destroy();
         }
@@ -231,8 +206,8 @@ class Auth
     {
         $message = '
         <h1>فراموشی رمز عبور</h1>
-        <p>'. $username .' عزیز برای تغییر رمز عبور حساب کاربری خود لطفا روی لینک زیر کلیک نمایید</p>
-        <di><a href="'. url('reset-password-form/' . $forgotToken) .'">بازیابی رمز عبور</a></di>
+        <p>' . $username . ' عزیز برای تغییر رمز عبور حساب کاربری خود لطفا روی لینک زیر کلیک نمایید</p>
+        <di><a href="' . url('reset-password-form/' . $forgotToken) . '">بازیابی رمز عبور</a></di>
         ';
         return $message;
     }
@@ -240,35 +215,27 @@ class Auth
 
     public function forgotRequest($request)
     {
-        if(empty($request['email']))
-        {
+        if (empty($request['email'])) {
             flash('forgot_error', 'ایمیل الزامی میباشد');
             $this->redirectBack();
-        }
-        else if(!filter_var($request['email'], FILTER_VALIDATE_EMAIL))
-        {
+        } else if (!filter_var($request['email'], FILTER_VALIDATE_EMAIL)) {
             flash('forgot_error', 'ایمیل معتبری وارد نشده');
             $this->redirectBack();
-        }
-        else{
+        } else {
             $db = new DataBase();
             $user = $db->select('SELECT * FROM users WHERE email = ?', [$request['email']])->fetch();
-            if($user == null)
-            {
+            if ($user == null) {
                 flash('forgot_error', 'کاربر یافت نشد');
                 $this->redirectBack();
-            }
-            else{
+            } else {
                 $randomToken = $this->random();
                 $forgotMessage = $this->forgotMessage($user['username'], $randomToken);
                 $result = $this->sendMail($request['email'], 'بازیابی رمز عبور', $forgotMessage);
-                if($result)
-                {
+                if ($result) {
                     date_default_timezone_set('Asia/Tehran');
                     $db->update('users', $user['id'], ['forgot_token', 'forgot_token_expire'], [$randomToken, date('Y-m-d H:i:s', strtotime('+15 minutes'))]);
                     $this->redirect('login');
-                }
-                else{
+                } else {
                     flash('forgot_error', 'ارسال ایمیل انجام نشد');
                     $this->redirectBack();
                 }
@@ -280,43 +247,34 @@ class Auth
     public function resetPasswordView($forgot_token)
     {
         require_once(BASE_PATH . '/template/auth/reset-password.php');
-
     }
 
 
     public function resetPassword($request, $forgot_token)
     {
-        if(!isset($request['password']) || strlen($request['password']) < 8)
-        {
+        if (!isset($request['password']) || strlen($request['password']) < 8) {
             flash('reset_error', 'رمز عبور وارد شده باید بیش از ۸ کاراکتر باشد');
             $this->redirectBack();
-        }
-        else{
+        } else {
             $db = new DataBase();
             $user = $db->select('SELECT * FROM users WHERE forgot_token = ?', [$forgot_token])->fetch();
-            if($user == null)
-            {
+            if ($user == null) {
                 flash('reset_error', 'کاربر یافت نشد');
                 $this->redirectBack();
-            }
-            else{
+            } else {
                 date_default_timezone_set('Asia/Tehran');
-                if($user['forgot_token_expire'] < date('Y-m-d H:i:s'))
-                {
+                if ($user['forgot_token_expire'] < date('Y-m-d H:i:s')) {
                     flash('reset_error', 'توکن ارسال شده معتبر نمیباشد ( تاریخ به اتمام رسیده )');
                     $this->redirectBack();
                 }
-                if($user)
-                {
+                if ($user) {
                     $db->update('users', $user['id'], ['password'], [$this->hash($request['password'])]);
                     $this->redirect('login');
-                }
-                else{
+                } else {
                     flash('reset_error', 'کاربر یافت نشد');
                     $this->redirectBack();
                 }
             }
         }
     }
-
 }

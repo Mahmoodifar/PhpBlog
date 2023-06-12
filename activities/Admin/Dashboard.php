@@ -4,8 +4,9 @@ namespace Admin;
 
 use database\Database;
 
-class Dashboard extends Admin{ 
-        
+class Dashboard extends Admin
+{
+
         public function index()
         {
                 $db = new DataBase();
@@ -23,8 +24,5 @@ class Dashboard extends Admin{
 
 
                 require_once(BASE_PATH . '/template/admin/dashboard/index.php');
-
         }
-
-
 }

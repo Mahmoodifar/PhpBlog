@@ -5,7 +5,8 @@ namespace database;
 use PDO;
 use PDOException;
 
-class DataBase{
+class DataBase
+{
 
     private $connection;
     private $options = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
@@ -16,11 +17,9 @@ class DataBase{
 
     function __construct()
     {
-        try
-        {
-            $this->connection = new PDO("mysql:host=" . $this->dbHost. ";dbname=" . $this->dbName, $this->dbUserName, $this->dbPassword, $this->options);
-        }
-        catch(PDOException $e){
+        try {
+            $this->connection = new PDO("mysql:host=" . $this->dbHost . ";dbname=" . $this->dbName, $this->dbUserName, $this->dbPassword, $this->options);
+        } catch (PDOException $e) {
             echo $e->getMessage();
             exit;
         }
@@ -31,37 +30,31 @@ class DataBase{
     // select('select * from users where id = ?', [2]);
     public function select($sql, $values = null)
     {
-        try{
+        try {
             $stmt = $this->connection->prepare($sql);
-            if($values == null)
-            {
+            if ($values == null) {
                 $stmt->execute();
-            }
-            else
-            {
+            } else {
                 $stmt->execute($values);
             }
             $result = $stmt;
             return $result;
-        }
-        catch(PDOException $e){
+        } catch (PDOException $e) {
             echo $e->getMessage();
             return false;
         }
-
     }
 
 
     // insert('users', ['username', 'password', 'age'], ['hassank2', '1234', 30]);
     public function insert($tableName, $fields, $values)
     {
-        try{
+        try {
             // 'username' => 'hassank2', 'password' => '1234', 'age' => 30
-            $stmt = $this->connection->prepare("INSERT INTO ".$tableName."(".implode(', ', $fields)." , created_at) VALUES ( :" . implode(', :', $fields) . " , now() );");
+            $stmt = $this->connection->prepare("INSERT INTO " . $tableName . "(" . implode(', ', $fields) . " , created_at) VALUES ( :" . implode(', :', $fields) . " , now() );");
             $stmt->execute(array_combine($fields, $values));
             return true;
-        }
-        catch(PDOException $e){
+        } catch (PDOException $e) {
             echo $e->getMessage();
             return false;
         }
@@ -72,45 +65,35 @@ class DataBase{
     {
 
         $sql = "UPDATE " . $tableName . " SET";
-        foreach(array_combine($fields, $values) as $field => $value)
-        {
-            if($value)
-            {
+        foreach (array_combine($fields, $values) as $field => $value) {
+            if ($value) {
                 $sql .= " `" . $field . "` = ? ,";
-            }
-            else{
+            } else {
                 $sql .= " `" . $field . "` = NULL ,";
-
             }
         }
 
         $sql .= " updated_at = now()";
         $sql .= " WHERE id = ?";
-        try{
+        try {
             $stmt = $this->connection->prepare($sql);
             $stmt->execute(array_merge(array_filter(array_values($values)), [$id]));
             return true;
-        }
-
-        catch(PDOException $e){
+        } catch (PDOException $e) {
             echo $e->getMessage();
             return false;
         }
-
-
     }
 
     // delete('users', 2);
     public function delete($tableName, $id)
     {
         $sql = "DELETE FROM " . $tableName . " WHERE id = ? ;";
-        try{
+        try {
             $stmt = $this->connection->prepare($sql);
             $stmt->execute([$id]);
             return true;
-        }
-
-        catch(PDOException $e){
+        } catch (PDOException $e) {
             echo $e->getMessage();
             return false;
         }
@@ -120,16 +103,12 @@ class DataBase{
 
     public function createTable($sql)
     {
-        try{
+        try {
             $this->connection->exec($sql);
             return true;
-        }
-        catch(PDOException $e){
+        } catch (PDOException $e) {
             echo $e->getMessage();
             return false;
         }
-        
     }
-
-
 }

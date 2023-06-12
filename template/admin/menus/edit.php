@@ -19,22 +19,23 @@ require_once BASE_PATH . '/template/admin/layouts/header.php';
 
                         <div class="form-group">
                                 <label for="url">url</label>
-                                <input type="text" class="form-control" id="url" name="url"  value="<?= $menu['url'] ?>" required>
+                                <input type="text" class="form-control" id="url" name="url" value="<?= $menu['url'] ?>" required>
                         </div>
 
                         <div class="form-group">
                                 <label for="parent_id">parent ID</label>
                                 <select name="parent_id" id="parent_id" class="form-control" autofocus>
 
-                                        <option value="" <?php if($menu['parent_id'] == '') echo 'selected' ?>>root</option>
+                                        <option value="" <?php if ($menu['parent_id'] == '') echo 'selected' ?>>root</option>
 
-                                        <?php foreach($menus as $selectMenu) { ?>
+                                        <?php foreach ($menus as $selectMenu) { ?>
                                                 <?php if ($menu['id'] != $selectMenu['id']) { ?>
-                                        <option value="<?= $selectMenu['id'] ?>" <?php if($menu['parent_id'] == $selectMenu['id']) echo 'selected' ?>>
-                                                <?= $selectMenu['name'] ?>
-                                        </option>
+                                                        <option value="<?= $selectMenu['id'] ?>" <?php if ($menu['parent_id'] == $selectMenu['id']) echo 'selected' ?>>
+                                                                <?= $selectMenu['name'] ?>
+                                                        </option>
 
-                                        <?php } } ?>
+                                        <?php }
+                                        } ?>
 
                                 </select>
                         </div>

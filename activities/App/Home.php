@@ -6,7 +6,8 @@ use database\DataBase;
 
 
 
-class Home{
+class Home
+{
 
         public function index()
         {
@@ -48,7 +49,6 @@ class Home{
                 $comments = $db->select('SELECT *, (SELECT username FROM users WHERE users.id = comments.user_id) AS username FROM comments WHERE post_id = ? AND status = "approved"', [$id])->fetchAll();
 
                 require_once(BASE_PATH . '/template/app/show.php');
-
         }
 
         public function category($id)
@@ -65,33 +65,26 @@ class Home{
                 $bodyBanner = $db->select('SELECT * FROM banners LIMIT 0,1')->fetch();
                 $categoryPosts = $db->select('SELECT posts.*,(SELECT COUNT(*) FROM comments WHERE comments.post_id = posts.id) AS comments_count, (SELECT username FROM users WHERE users.id = posts.user_id) AS username, (SELECT name FROM categories WHERE categories.id = posts.cat_id) AS category FROM posts WHERE cat_id = ? ORDER BY created_at DESC LIMIT 0,6', [$id])->fetchAll();
                 require_once(BASE_PATH . '/template/app/category.php');
-
         }
 
         public function commentStore($request, $post_id)
         {
-                if(isset($_SESSION['user']))
-                {
-               if($_SESSION['user'] != null)
-               {
-                $db = new Database();
-                $db->insert('comments', ['user_id', 'post_id', 'comment'], [$_SESSION['user'], $post_id, $request['comment']]);
-                $this->redirectBack();
-               }
-               else{
-                $this->redirectBack();
-               }
-        }
-        else{
-                $this->redirectBack();
-        }
-
+                if (isset($_SESSION['user'])) {
+                        if ($_SESSION['user'] != null) {
+                                $db = new Database();
+                                $db->insert('comments', ['user_id', 'post_id', 'comment'], [$_SESSION['user'], $post_id, $request['comment']]);
+                                $this->redirectBack();
+                        } else {
+                                $this->redirectBack();
+                        }
+                } else {
+                        $this->redirectBack();
+                }
         }
 
         protected function redirectBack()
         {
-                header('Location: '. $_SERVER['HTTP_REFERER']);
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
                 exit;
         }
-
 }

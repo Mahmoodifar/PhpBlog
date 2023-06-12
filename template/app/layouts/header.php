@@ -20,7 +20,7 @@
     <!--
 		CSS
 		============================================= -->
-     <link rel="stylesheet" href="<?= asset('public/app/css/linearicons.css') ?>">
+    <link rel="stylesheet" href="<?= asset('public/app/css/linearicons.css') ?>">
     <link rel="stylesheet" href="<?= asset('public/app/css/font-awesome.min.css') ?>">
     <link rel="stylesheet" href="<?= asset('public/app/css/bootstrap.css') ?>">
     <link rel="stylesheet" href="<?= asset('public/app/css/magnific-popup.css') ?>">
@@ -34,5 +34,5 @@
 <body>
     <header>
 
-  
+
     </header>

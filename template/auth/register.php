@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>ثبت نام</title>
-<?php require_once(BASE_PATH . '/template/auth/layouts/head-tag.php')?>
+    <?php require_once(BASE_PATH . '/template/auth/layouts/head-tag.php') ?>
 </head>
 
 <body>
@@ -20,16 +21,16 @@
                     </span>
 
                     <?php
-                        $message = flash('register_error');
-                        if (!empty($message)) {
-                            ?>
+                    $message = flash('register_error');
+                    if (!empty($message)) {
+                    ?>
 
-                    <div class="mb-2 alert alert-danger"> <small class="form-text text-danger">
-                        <?= $message ?>
-                    </small> </div>
+                        <div class="mb-2 alert alert-danger"> <small class="form-text text-danger">
+                                <?= $message ?>
+                            </small> </div>
 
                     <?php
-                        } ?>
+                    } ?>
 
 
 
@@ -86,9 +87,9 @@
 
 
 
-    <?php require_once(BASE_PATH . '/template/auth/layouts/scripts.php')?>
+    <?php require_once(BASE_PATH . '/template/auth/layouts/scripts.php') ?>
 
-  
+
 
 </body>
 

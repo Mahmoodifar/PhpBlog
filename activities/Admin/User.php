@@ -4,8 +4,9 @@ namespace Admin;
 
 use database\Database;
 
-class User extends Admin{ 
-        
+class User extends Admin
+{
+
         public function index()
         {
                 $db = new DataBase();
@@ -26,7 +27,6 @@ class User extends Admin{
                 $request = ['username' => $request['username'], 'permission' => $request['permission']];
                 $db->update('users', $id, array_keys($request), $request);
                 $this->redirect('admin/user');
-
         }
 
         public function delete($id)
@@ -42,13 +42,12 @@ class User extends Admin{
         {
                 $db = new DataBase();
                 $user = $db->select('SELECT * FROM users WHERE id = ?;', [$id])->fetch();
-                if(empty($user)){
-                        $this->redirectBack();  
+                if (empty($user)) {
+                        $this->redirectBack();
                 }
-                if($user['permission'] == 'user'){
+                if ($user['permission'] == 'user') {
                         $db->update('users', $id, ['permission'], ['admin']);
-                }
-                else{
+                } else {
                         $db->update('users', $id, ['permission'], ['user']);
                 }
                 $this->redirectBack();

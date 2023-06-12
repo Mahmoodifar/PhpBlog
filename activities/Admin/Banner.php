@@ -4,8 +4,9 @@ namespace Admin;
 
 use database\Database;
 
-class Banner extends Admin{ 
-        
+class Banner extends Admin
+{
+
         public function index()
         {
                 $db = new DataBase();
@@ -17,22 +18,18 @@ class Banner extends Admin{
         {
 
                 require_once(BASE_PATH . '/template/admin/banners/create.php');
-
         }
 
         public function store($request)
         {
                 $db = new DataBase();
-                        $request['image'] = $this->saveImage($request['image'], 'banner-image');
-                        if($request['image'])
-                        {
-                                $db->insert('banners', array_keys($request), $request);
-                                $this->redirect('admin/banner');
-                        }
-                        else{
-                                $this->redirect('admin/banner');
-                        }
-                
+                $request['image'] = $this->saveImage($request['image'], 'banner-image');
+                if ($request['image']) {
+                        $db->insert('banners', array_keys($request), $request);
+                        $this->redirect('admin/banner');
+                } else {
+                        $this->redirect('admin/banner');
+                }
         }
 
         public function edit($id)
@@ -44,23 +41,17 @@ class Banner extends Admin{
 
         public function update($request, $id)
         {
-                $db = new DataBase();
-                {
-                        if($request['image']['tmp_name'] != null)
-                        {
+                $db = new DataBase(); {
+                        if ($request['image']['tmp_name'] != null) {
                                 $banner = $db->select('SELECT * FROM banners WHERE id = ?;', [$id])->fetch();
                                 $this->removeImage($banner['image']);
                                 $request['image'] = $this->saveImage($request['image'], 'banner-image');
-                        }
-                             
-                        else{
+                        } else {
                                 unset($request['image']);
                         }
-                        $db->update('banners', $id , array_keys($request), $request);
+                        $db->update('banners', $id, array_keys($request), $request);
                         $this->redirect('admin/banner');
                 }
-              
-
         }
 
         public function delete($id)

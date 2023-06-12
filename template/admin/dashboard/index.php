@@ -82,7 +82,7 @@ require_once(BASE_PATH . '/template/admin/layouts/header.php');
                                 <?= $mostViewedPost['id'] ?>
                             </td>
                             <td>
-                            <?= $mostViewedPost['title'] ?>
+                                <?= $mostViewedPost['title'] ?>
                             </td>
                             <td><span class="badge badge-secondary"> <?= $mostViewedPost['view'] ?></span></td>
                         </tr>
@@ -109,19 +109,19 @@ require_once(BASE_PATH . '/template/admin/layouts/header.php');
                 </thead>
                 <tbody>
 
-                <?php foreach($mostCommentedPosts as $mostCommentedPost) { ?>
+                    <?php foreach ($mostCommentedPosts as $mostCommentedPost) { ?>
 
-                    <tr>
-                        <td>
-                            <a class="text-primary" href="">
-                                <?= $mostCommentedPost['id'] ?>
-                            </a>
-                        </td>
-                        <td>
-                        <?= $mostCommentedPost['title'] ?>
-                        </td>
-                        <td><span class="badge badge-success"><?= $mostCommentedPost['comment_count'] ?></span></td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <a class="text-primary" href="">
+                                    <?= $mostCommentedPost['id'] ?>
+                                </a>
+                            </td>
+                            <td>
+                                <?= $mostCommentedPost['title'] ?>
+                            </td>
+                            <td><span class="badge badge-success"><?= $mostCommentedPost['comment_count'] ?></span></td>
+                        </tr>
 
                     <?php } ?>
 
@@ -148,21 +148,21 @@ require_once(BASE_PATH . '/template/admin/layouts/header.php');
                 <tbody>
 
 
-                <?php foreach ($lastComments as $lastComment) { ?>
-                    <tr>
-                        <td>
-                            <a class="text-primary" href="">
-                                <?= $lastComment['id'] ?>
-                            </a>
-                        </td>
-                        <td>
-                        <?= $lastComment['username'] ?>
-                        </td>
-                        <td>
-                        <?= $lastComment['comment'] ?>
-                        </td>
-                        <td><span class="badge badge-warning"> <?= $lastComment['status'] ?></span></td>
-                    </tr>
+                    <?php foreach ($lastComments as $lastComment) { ?>
+                        <tr>
+                            <td>
+                                <a class="text-primary" href="">
+                                    <?= $lastComment['id'] ?>
+                                </a>
+                            </td>
+                            <td>
+                                <?= $lastComment['username'] ?>
+                            </td>
+                            <td>
+                                <?= $lastComment['comment'] ?>
+                            </td>
+                            <td><span class="badge badge-warning"> <?= $lastComment['status'] ?></span></td>
+                        </tr>
                     <?php } ?>
 
 

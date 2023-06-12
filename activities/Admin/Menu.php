@@ -4,8 +4,9 @@ namespace Admin;
 
 use database\Database;
 
-class Menu extends Admin{ 
-        
+class Menu extends Admin
+{
+
         public function index()
         {
                 $db = new DataBase();
@@ -40,7 +41,6 @@ class Menu extends Admin{
                 $db = new DataBase();
                 $db->update('menus', $id, array_keys($request), $request);
                 $this->redirect('admin/menu');
-
         }
 
         public function delete($id)

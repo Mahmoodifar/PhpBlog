@@ -1,4 +1,6 @@
-<?php namespace Parsidev\Jalali;
+<?php
+
+namespace Parsidev\Jalali;
 
 class jDate
 {

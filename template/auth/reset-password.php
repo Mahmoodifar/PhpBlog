@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>تغییر رمز عبور</title>
-<?php require_once(BASE_PATH . '/template/auth/layouts/head-tag.php')?>
+    <?php require_once(BASE_PATH . '/template/auth/layouts/head-tag.php') ?>
 </head>
 
 <body>
 
-<div class="limiter">
+    <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
                 <div class="login100-pic js-tilt" data-tilt>
-                <img src="<?= asset('public/auth/assets/images/img-01.png') ?>" alt="IMG">
+                    <img src="<?= asset('public/auth/assets/images/img-01.png') ?>" alt="IMG">
                 </div>
 
                 <form method="POST" action="<?= url('reset-password/' . $forgot_token) ?>" class="login100-form validate-form">
@@ -20,16 +21,16 @@
                     </span>
 
                     <?php
-                        $message = flash('reset_error');
-                        if (!empty($message)) {
-                            ?>
+                    $message = flash('reset_error');
+                    if (!empty($message)) {
+                    ?>
 
-                    <div class="mb-2 alert alert-danger"> <small class="form-text text-danger">
-                        <?= $message ?>
-                    </small> </div>
+                        <div class="mb-2 alert alert-danger"> <small class="form-text text-danger">
+                                <?= $message ?>
+                            </small> </div>
 
                     <?php
-                        } ?>
+                    } ?>
 
 
                     <div class="wrap-input100 validate-input" data-validate="Password is required">
@@ -69,9 +70,9 @@
 
 
 
-<?php require_once(BASE_PATH . '/template/auth/layouts/scripts.php')?>
+    <?php require_once(BASE_PATH . '/template/auth/layouts/scripts.php') ?>
 
-  
+
 
 </body>
 
