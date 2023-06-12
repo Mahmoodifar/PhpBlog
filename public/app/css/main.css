@@ -29,7 +29,7 @@ Created:
 6.  About Style
 7.  Post Type Style
 8.  Contact Style
-9.  Footer Style
+9.  Footer Style    
 
 -------------------------------------------------------------------*/
 
@@ -1413,12 +1413,12 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 /* =================================== */
 
-
+ 
 /*  Homepage Styles
 /* =================================== */
 
 body {
-    background: #ecf0f1;
+    background: #0aa2c8;
 }
 
 .section-gap {
